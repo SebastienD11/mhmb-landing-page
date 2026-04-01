@@ -5,15 +5,8 @@
     <meta name="viewport" content="width=device-width, initial-scale=1" />
     <title>Marée Haute Marée Basse | Saint-Malo</title>
     <meta name="robots" content="noindex,nofollow" />
+    <link rel="icon" href="favicon.jpg" />
     <style>
-      :root {
-        --sea-0: #025b76;
-        --sea-1: #057a9a;
-        --sea-2: #0ea5c6;
-        --foam: rgba(255, 255, 255, 0.85);
-        --ink: rgba(0, 0, 0, 0.22);
-      }
-
       html,
       body {
         height: 100%;
@@ -21,227 +14,37 @@
 
       body {
         margin: 0;
-        background: radial-gradient(1200px 800px at 30% 20%, rgba(255, 255, 255, 0.10), transparent 60%),
-          radial-gradient(900px 700px at 80% 25%, rgba(255, 255, 255, 0.08), transparent 55%),
-          radial-gradient(900px 900px at 65% 85%, rgba(0, 0, 0, 0.16), transparent 60%),
-          linear-gradient(180deg, var(--sea-2), var(--sea-0));
+        background: #000;
         overflow: hidden;
       }
 
-      .ocean {
+      .bg {
         position: fixed;
         inset: 0;
       }
 
-      svg {
+      .bg video {
         width: 100%;
         height: 100%;
         display: block;
-      }
-
-      .tide {
-        transform-origin: 50% 50%;
-        animation: tideLift 8.2s ease-in-out infinite;
-        filter: drop-shadow(0 24px 48px var(--ink));
-      }
-
-      .layer {
-        transform-origin: 50% 50%;
-        animation: drift 14s linear infinite;
-        opacity: 0.9;
-        mix-blend-mode: screen;
-      }
-      .layer.l2 {
-        animation-duration: 19s;
-        opacity: 0.75;
-      }
-      .layer.l3 {
-        animation-duration: 27s;
-        opacity: 0.55;
-        mix-blend-mode: overlay;
-      }
-
-      .foam {
-        opacity: 0.85;
-        mix-blend-mode: soft-light;
-        filter: blur(0.25px);
-        animation: foamPulse 3.6s ease-in-out infinite;
-      }
-
-      .noise {
-        opacity: 0.07;
-        mix-blend-mode: overlay;
-      }
-
-      @keyframes tideLift {
-        0% {
-          transform: translateY(6vh);
-        }
-        45% {
-          transform: translateY(-10vh);
-        }
-        55% {
-          transform: translateY(-10vh);
-        }
-        100% {
-          transform: translateY(6vh);
-        }
-      }
-
-      @keyframes drift {
-        0% {
-          transform: translateX(-4vw);
-        }
-        100% {
-          transform: translateX(4vw);
-        }
-      }
-
-      @keyframes foamPulse {
-        0%,
-        100% {
-          opacity: 0.72;
-        }
-        50% {
-          opacity: 0.95;
-        }
-      }
-
-      @media (prefers-reduced-motion: reduce) {
-        .tide,
-        .layer,
-        .foam {
-          animation: none !important;
-        }
+        object-fit: cover;
+        object-position: center;
       }
     </style>
   </head>
   <body>
-    <div class="ocean" aria-hidden="true">
-      <svg viewBox="0 0 1440 900" preserveAspectRatio="xMidYMid slice" role="img">
-        <defs>
-          <linearGradient id="deep" x1="0" y1="0" x2="0" y2="1">
-            <stop offset="0" stop-color="#10b7d7" stop-opacity="0.25" />
-            <stop offset="0.55" stop-color="#0a87a8" stop-opacity="0.20" />
-            <stop offset="1" stop-color="#024b62" stop-opacity="0.35" />
-          </linearGradient>
-
-          <linearGradient id="waveA" x1="0" y1="0" x2="1" y2="0">
-            <stop offset="0" stop-color="#a7f3ff" stop-opacity="0.35" />
-            <stop offset="0.35" stop-color="#63e6ff" stop-opacity="0.26" />
-            <stop offset="0.7" stop-color="#1ad0f6" stop-opacity="0.18" />
-            <stop offset="1" stop-color="#0aa0c8" stop-opacity="0.10" />
-          </linearGradient>
-
-          <linearGradient id="waveB" x1="1" y1="0" x2="0" y2="1">
-            <stop offset="0" stop-color="#e6feff" stop-opacity="0.28" />
-            <stop offset="0.4" stop-color="#7cecff" stop-opacity="0.18" />
-            <stop offset="1" stop-color="#0aa0c8" stop-opacity="0.10" />
-          </linearGradient>
-
-          <filter id="grain" x="-20%" y="-20%" width="140%" height="140%">
-            <feTurbulence type="fractalNoise" baseFrequency="0.9" numOctaves="3" stitchTiles="stitch" />
-            <feColorMatrix type="matrix" values="
-              1 0 0 0 0
-              0 1 0 0 0
-              0 0 1 0 0
-              0 0 0 0.6 0" />
-          </filter>
-
-          <filter id="ripples" x="-30%" y="-30%" width="160%" height="160%">
-            <feTurbulence type="turbulence" baseFrequency="0.006 0.014" numOctaves="2" seed="7" result="turb" />
-            <feDisplacementMap in="SourceGraphic" in2="turb" scale="28" xChannelSelector="R" yChannelSelector="G" />
-          </filter>
-        </defs>
-
-        <rect x="0" y="0" width="1440" height="900" fill="url(#deep)" />
-
-        <g class="tide">
-          <!-- main tide bands -->
-          <g class="layer l1" filter="url(#ripples)">
-            <path
-              fill="url(#waveA)"
-              d="M0,620
-                 C85,590 150,680 230,642
-                 C320,600 365,522 450,560
-                 C545,602 560,720 650,690
-                 C745,658 760,510 850,552
-                 C945,598 980,742 1075,700
-                 C1168,660 1195,508 1288,548
-                 C1355,578 1400,640 1440,612
-                 L1440,900 L0,900 Z"
-            />
-          </g>
-
-          <g class="layer l2" filter="url(#ripples)">
-            <path
-              fill="url(#waveB)"
-              d="M0,690
-                 C110,660 140,748 255,720
-                 C365,694 380,600 500,635
-                 C620,672 600,790 735,760
-                 C870,730 860,594 985,635
-                 C1105,675 1125,820 1260,770
-                 C1355,735 1385,700 1440,710
-                 L1440,900 L0,900 Z"
-              opacity="0.8"
-            />
-          </g>
-
-          <g class="layer l3" filter="url(#ripples)">
-            <path
-              fill="rgba(255,255,255,0.12)"
-              d="M0,760
-                 C95,730 150,820 250,790
-                 C350,760 340,675 470,708
-                 C600,744 590,840 720,816
-                 C860,790 870,710 995,736
-                 C1130,764 1180,860 1310,836
-                 C1390,822 1420,792 1440,800
-                 L1440,900 L0,900 Z"
-            />
-          </g>
-
-          <!-- foam scribbles -->
-          <g class="foam">
-            <path
-              fill="none"
-              stroke="var(--foam)"
-              stroke-width="3.5"
-              stroke-linecap="round"
-              stroke-linejoin="round"
-              opacity="0.55"
-              d="M60,612
-                 C140,592 160,652 230,630
-                 C300,608 318,560 390,584
-                 C460,608 472,672 540,656
-                 C610,640 620,594 690,612
-                 C760,630 780,690 850,666
-                 C920,642 938,590 1010,612
-                 C1085,636 1110,700 1186,678
-                 C1260,656 1290,600 1360,620"
-            />
-            <path
-              fill="none"
-              stroke="rgba(255,255,255,0.65)"
-              stroke-width="2.25"
-              stroke-linecap="round"
-              stroke-dasharray="9 10 2 14 7 22"
-              opacity="0.65"
-              d="M120,710
-                 C210,682 255,752 340,726
-                 C420,700 430,650 520,674
-                 C612,700 615,770 712,748
-                 C810,726 842,680 930,702
-                 C1018,724 1040,790 1130,760
-                 C1222,730 1260,704 1340,718"
-            />
-          </g>
-        </g>
-
-        <!-- subtle grain overlay -->
-        <rect class="noise" x="0" y="0" width="1440" height="900" filter="url(#grain)" />
-      </svg>
+    <div class="bg" aria-hidden="true">
+      <video
+        autoplay
+        muted
+        loop
+        playsinline
+        preload="auto"
+        disablepictureinpicture
+        controlslist="nodownload noplaybackrate noremoteplayback"
+      >
+        <source src="7031087_Above_Aerial_1920x1080.mp4" type="video/mp4" />
+      </video>
     </div>
   </body>
 </html>
